@@ -6,6 +6,21 @@ const cors       = require('cors')
 const path       = require('path')
 const { connectMongoDB } = require('./mongodb')
 
+/* ── Validate required environment variables at startup ── */
+const REQUIRED_ENV = ['MONGODB_URI', 'JWT_SECRET']
+const missing = REQUIRED_ENV.filter(k => !process.env[k])
+if (missing.length > 0) {
+  console.error(`✗ Missing required environment variables: ${missing.join(', ')}`)
+  console.error('  → Set them in Railway Dashboard → Variables')
+  process.exit(1)
+}
+
+/* ── JWT_SECRET fallback safety net (should never reach here after above check) ── */
+if (!process.env.JWT_SECRET) {
+  process.env.JWT_SECRET = require('crypto').randomBytes(64).toString('hex')
+  console.warn('⚠ JWT_SECRET not set — using random key (sessions will reset on restart!)')
+}
+
 const app    = express()
 const server = http.createServer(app)
 
