@@ -106,7 +106,7 @@ export function notifyOTP(payload: OTPNotifyPayload) {
       tag:  `otp-${number}`,   // replaces previous notification for same number
       renotify: true,
       silent: false,
-    })
+    } as NotificationOptions)
 
     // Auto-close after 8 seconds
     setTimeout(() => { try { n.close() } catch {} }, 8000)
