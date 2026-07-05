@@ -1,0 +1,880 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: #7C3AED;
+  --bg-page: #f1f5f9;
+  --bg-card: #ffffff;
+  --bg-sidebar: #ffffff;
+  --border: #e2e8f0;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #94a3b8;
+  --input-bg: #f8fafc;
+}
+
+.dark {
+  --bg-page: #0f172a;
+  --bg-card: #1e293b;
+  --bg-sidebar: #1e293b;
+  --border: #334155;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --input-bg: #334155;
+}
+
+/* ── Auth pages always light — never affected by dark mode ── */
+.auth-page,
+.auth-page * {
+  color-scheme: light !important;
+}
+
+.auth-page input,
+.auth-page select,
+.auth-page textarea {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  border-color: #e2e8f0 !important;
+}
+
+/* Override Tailwind dark: variants on auth pages */
+.dark .auth-page input,
+.dark .auth-page select {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: var(--bg-page);
+  color: var(--text-primary);
+  transition: background-color 0.3s, color 0.3s;
+  font-size: 15px;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 4px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+/* Accent utility */
+.bg-accent { background-color: var(--accent); }
+.text-accent { color: var(--accent); }
+.border-accent { border-color: var(--accent); }
+.ring-accent { --tw-ring-color: var(--accent); }
+
+/* ─── Global page layout ─── */
+.page-wrap {
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-height: calc(100vh - 48px);
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
+}
+
+/* ─── Dark mode global overrides for inline-styled elements ─── */
+/* These cover cards and panels that use hardcoded white backgrounds */
+.dark .card,
+.dark [class*="card"] {
+  background: var(--bg-card) !important;
+  border-color: var(--border) !important;
+}
+
+/* Table rows */
+.dark .data-table tbody tr {
+  background: var(--bg-card);
+}
+.dark .data-table tbody tr:hover {
+  background: #263248 !important;
+}
+
+/* Input fields */
+.dark input,
+.dark textarea,
+.dark select {
+  background: var(--input-bg) !important;
+  border-color: var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+/* Generic white-bg sections in dark mode */
+.dark section,
+.dark aside > div,
+.dark nav {
+  background: var(--bg-sidebar);
+}
+
+/* ─── Card hover lift — add class "card" to any white box ─── */
+.card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, background 0.3s, border-color 0.3s;
+}
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.09);
+}
+.dark .card:hover {
+  box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+}
+
+/* ─── Page heading sizes ─── */
+.page-title {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+
+.page-sub {
+  font-size: 15px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* ─── Section heading inside cards ─── */
+.card-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+/* ─── Table cells bigger ─── */
+.data-table th {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  padding: 10px 20px;
+  white-space: nowrap;
+  background: var(--input-bg);
+}
+.data-table td {
+  font-size: 15px;
+  padding: 13px 20px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-secondary);
+}
+
+/* ─── Form label ─── */
+.form-label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  display: block;
+  margin-bottom: 6px;
+}
+
+/* ─── Stat badge value ─── */
+.stat-value {
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+  color: var(--text-primary);
+}
+
+@keyframes fadeSlideIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.97); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50%       { opacity: 0.4; transform: scale(1.5); }
+}
+
+.console-line {
+  animation: fadeSlideIn 0.3s ease;
+}
+
+/* ─── Privacy mode — mask all numbers with dots ─── */
+body.privacy-on .mask-num {
+  color: transparent;
+  background-image: repeating-linear-gradient(90deg, #0f172a 0px, #0f172a 2px, transparent 2px, transparent 5px);
+  background-size: 7px 100%;
+  background-position: center;
+  background-repeat: repeat-x;
+}
+
+.dark body.privacy-on .mask-num {
+  background-image: repeating-linear-gradient(90deg, #f8fafc 0px, #f8fafc 2px, transparent 2px, transparent 5px);
+}
+
+/* ─── Admin / Agent panel: bump up small inline font-sizes for readability ───
+   All admin & agent pages use inline style with small px sizes (10-16px).
+   We override ONLY within .big-ui so the rest of the app is untouched.
+   Layout boxes (padding/width/height) are left alone so nothing breaks.   */
+.big-ui [style*="font-size:10px"],
+.big-ui [style*="font-size: 10px"]  { font-size: 13px !important; }
+
+.big-ui [style*="font-size:11px"],
+.big-ui [style*="font-size: 11px"]  { font-size: 14px !important; }
+
+.big-ui [style*="font-size:12px"],
+.big-ui [style*="font-size: 12px"]  { font-size: 15px !important; }
+
+.big-ui [style*="font-size:13px"],
+.big-ui [style*="font-size: 13px"]  { font-size: 16px !important; }
+
+.big-ui [style*="font-size:14px"],
+.big-ui [style*="font-size: 14px"]  { font-size: 17px !important; }
+
+.big-ui [style*="font-size:15px"],
+.big-ui [style*="font-size: 15px"]  { font-size: 18px !important; }
+
+.big-ui [style*="font-size:16px"],
+.big-ui [style*="font-size: 16px"]  { font-size: 19px !important; }
+
+.big-ui [style*="font-size:17px"],
+.big-ui [style*="font-size: 17px"]  { font-size: 20px !important; }
+
+.big-ui [style*="font-size:22px"],
+.big-ui [style*="font-size: 22px"]  { font-size: 24px !important; }
+
+.big-ui [style*="font-size:26px"],
+.big-ui [style*="font-size: 26px"]  { font-size: 28px !important; }
+
+.big-ui [style*="font-size:28px"],
+.big-ui [style*="font-size: 28px"]  { font-size: 30px !important; }
+
+/* Slightly bump icon sizes inside nav and table action buttons for clarity */
+.big-ui nav svg,
+.big-ui aside svg { width: 18px; height: 18px; }
+
+/* Tables: a touch more vertical breathing room so bigger text isn't cramped */
+.big-ui table td { line-height: 1.5; }
+.big-ui table th { font-size: 13px !important; }
+
+
+/* ══════════════════════════════════════════
+   USER PANEL — global font size bump
+   All pages under .page-wrap use inline styles
+   with font-size 11-14px. These override them.
+   ══════════════════════════════════════════ */
+.page-wrap [style*="font-size: 11px"],
+.page-wrap [style*="font-size:11px"]  { font-size: 13px !important; }
+
+.page-wrap [style*="font-size: 12px"],
+.page-wrap [style*="font-size:12px"]  { font-size: 14px !important; }
+
+.page-wrap [style*="font-size: 13px"],
+.page-wrap [style*="font-size:13px"]  { font-size: 15px !important; }
+
+.page-wrap [style*="font-size: 14px"],
+.page-wrap [style*="font-size:14px"]  { font-size: 16px !important; }
+
+/* ── Tablet & Mobile (≤ 768px) ── */
+@media (max-width: 768px) {
+
+  /* Reset page-wrap font bumps on mobile to avoid overflow */
+  .page-wrap [style*="font-size: 11px"],
+  .page-wrap [style*="font-size:11px"]  { font-size: 12px !important; }
+  .page-wrap [style*="font-size: 12px"],
+  .page-wrap [style*="font-size:12px"]  { font-size: 13px !important; }
+  .page-wrap [style*="font-size: 13px"],
+  .page-wrap [style*="font-size:13px"]  { font-size: 13px !important; }
+  .page-wrap [style*="font-size: 14px"],
+  .page-wrap [style*="font-size:14px"]  { font-size: 14px !important; }
+
+  /* Page wrap */
+  .page-wrap {
+    padding: 14px 12px !important;
+    gap: 14px !important;
+  }
+
+  .page-title { font-size: 20px !important; }
+  .page-sub   { font-size: 13px !important; }
+
+  /* Sidebar — slide in from left on mobile */
+  .sidebar-desktop {
+    transform: translateX(-100%) !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15) !important;
+  }
+  .mobile-sidebar-open  { transform: translateX(0) !important; }
+  .mobile-sidebar-closed { transform: translateX(-100%) !important; }
+
+  /* Main content — full width */
+  .mobile-main {
+    margin-left: 0 !important;
+  }
+
+  /* Topbar — full width */
+  header.fixed { left: 0 !important; }
+
+  /* Show hamburger on mobile */
+  .mobile-hamburger { display: flex !important; }
+
+  /* Cards */
+  .card { border-radius: 12px !important; }
+
+  /* Dashboard stat grids — 2 col on mobile */
+  [style*='repeat(4,1fr)'] { grid-template-columns: repeat(2,1fr) !important; }
+  [style*='repeat(3,1fr)'] { grid-template-columns: repeat(2,1fr) !important; }
+
+  /* GetNumber — stack panels vertically */
+  [style*='gridTemplateColumns: 280px'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Tables — horizontal scroll */
+  .overflow-auto, [style*='overflow: auto'] {
+    overflow-x: auto !important;
+  }
+
+  /* Admin/Agent sidebar */
+  .big-ui aside {
+    transform: translateX(-100%);
+    transition: transform 0.3s ease, width 0.25s ease !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.2);
+  }
+  .big-ui aside.mobile-open {
+    transform: translateX(0) !important;
+  }
+  .big-ui > div:last-child {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+
+  /* Support panel */
+  [style*='maxWidth: 420'] {
+    max-width: 100vw !important;
+    border-radius: 16px 16px 0 0 !important;
+    bottom: 0 !important;
+  }
+
+  /* Modals — full screen on mobile */
+  [style*='width: 560'], [style*='width: 540'],
+  [style*='width: 620'], [style*='width: 600'] {
+    width: 96vw !important;
+    max-width: 96vw !important;
+  }
+
+  /* Charts */
+  [style*='gridTemplateColumns: 2fr 1fr'] {
+    grid-template-columns: 1fr !important;
+  }
+  [style*='gridTemplateColumns: 1fr 1fr'] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ════════════════════════════════════════
+   MOBILE RESPONSIVE — BITTX SMS
+   ════════════════════════════════════════ */
+
+/* ── Small mobile (≤ 480px) ── */
+@media (max-width: 480px) {
+  /* Stack all grids to 1 col */
+  [style*='repeat(2,1fr)'],
+  [style*='repeat(3,1fr)'],
+  [style*='repeat(4,1fr)'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Buttons — full width */
+  .mobile-btn-full { width: 100% !important; }
+
+  /* Topbar search — hide on tiny screens */
+  .topbar-search { display: none !important; }
+
+  /* Big-UI font scale ── reduce scale on mobile */
+  .big-ui [style*='font-size:14px'],
+  .big-ui [style*='font-size: 14px'] { font-size: 14px !important; }
+  .big-ui [style*='font-size:13px'],
+  .big-ui [style*='font-size: 13px'] { font-size: 13px !important; }
+  .big-ui [style*='font-size:26px'],
+  .big-ui [style*='font-size: 26px'] { font-size: 20px !important; }
+}
+
+/* ── Admin/Agent sidebar mobile toggle ── */
+@media (max-width: 768px) {
+
+  /* Show mobile hamburger button */
+  .mobile-hamburger {
+    display: flex !important;
+  }
+
+  /* Hide desktop hamburger in admin */
+  .big-ui header button:not(.mobile-hamburger) {
+    /* keep visible */
+  }
+
+  /* Admin/Agent sidebar — hide by default on mobile */
+  .big-ui aside {
+    transform: translateX(-100%) !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.25) !important;
+  }
+  .big-ui aside.mobile-open {
+    transform: translateX(0) !important;
+  }
+
+  /* Admin/Agent main — full width */
+  .big-ui > div:last-child {
+    margin-left: 0 !important;
+    flex: 1 !important;
+  }
+
+  /* User panel sidebar */
+  .sidebar-desktop {
+    transform: translateX(-100%) !important;
+    width: 220px !important;
+    min-width: 220px !important;
+    box-shadow: 4px 0 24px rgba(0,0,0,0.15) !important;
+  }
+  .mobile-sidebar-open {
+    transform: translateX(0) !important;
+  }
+
+  /* User panel main */
+  .mobile-main {
+    margin-left: 0 !important;
+  }
+
+  /* Topbar full width */
+  header[style*='left:'] {
+    left: 0 !important;
+  }
+
+  /* GetNumber 2-col → 1-col */
+  [style*='gridTemplateColumns: 280px 1fr'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Dashboard charts 2fr/1fr → 1fr */
+  [style*='gridTemplateColumns: 2fr 1fr'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Analytics 2-col */
+  [style*='gridTemplateColumns: 1fr 1fr'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Stat cards 4-col → 2-col */
+  [style*='repeat(4,1fr)'] {
+    grid-template-columns: repeat(2,1fr) !important;
+  }
+  [style*='repeat(3,1fr)'] {
+    grid-template-columns: repeat(2,1fr) !important;
+  }
+
+  /* Modals full width */
+  [style*='width: 560'], [style*='width: 540'],
+  [style*='width: 620'], [style*='width: 600'],
+  [style*='width: 500'], [style*='width: 480'] {
+    width: 95vw !important;
+    max-width: 95vw !important;
+  }
+
+  /* Support panel */
+  [style*='bottom: 96px'][style*='width: 360'] {
+    width: calc(100vw - 20px) !important;
+    right: 10px !important;
+    left: 10px !important;
+  }
+
+  /* Page wrap admin */
+  .big-ui main {
+    padding: 14px 12px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  [style*='repeat(4,1fr)'] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+  [style*='repeat(2,1fr)'] {
+    grid-template-columns: 1fr !important;
+  }
+  .big-ui main {
+    padding: 10px 8px !important;
+  }
+}
+
+/* ── GetNumber: mobile grid fix — right panel visible only when left hidden ── */
+
+/* Hide filter toggle button on desktop */
+.mobile-filter-btn {
+  display: none;
+}
+
+@media (max-width: 768px) {
+
+  /* Show the mobile filter toggle button */
+  .mobile-filter-btn {
+    display: flex !important;
+  }
+
+  /* Main grid → full width single column */
+  .get-number-grid {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+    width: 100% !important;
+  }
+
+  /* Right panel — full width, no overflow */
+  .get-number-right {
+    width: 100% !important;
+    min-width: 0 !important;
+    grid-column: 1 !important;
+  }
+
+  /* Hide left panel by default on mobile */
+  .get-number-left-panel {
+    display: none !important;
+  }
+  .get-number-left-panel.mobile-panel-open {
+    display: flex !important;
+    grid-column: 1 / -1 !important;
+  }
+}
+
+@media (max-width: 480px) {
+  /* All stat cards 1 col */
+  [style*='repeat(4,1fr)'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Charts full width */
+  [style*='gridTemplateColumns: 2fr 1fr'] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Dashboard mobile: stat cards as list items ── */
+@media (max-width: 480px) {
+  /* Make stat cards look like list items */
+  .page-wrap > div > div[style*='border-radius: 16'] {
+    min-height: unset !important;
+  }
+}
+
+/* ── Dashboard mobile: stat cards as full-width list items ── */
+@media (max-width: 640px) {
+
+  /* Stat cards grid → single column list */
+  .dashboard-stat-grid {
+    grid-template-columns: 1fr !important;
+    gap: 0 !important;
+  }
+
+  /* Each stat card → horizontal list item style */
+  .dashboard-stat-grid > div {
+    border-radius: 0 !important;
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid var(--border) !important;
+    padding: 16px 16px !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 16px !important;
+  }
+  .dashboard-stat-grid > div:first-child {
+    border-radius: 16px 16px 0 0 !important;
+    border-top: 1px solid var(--border) !important;
+  }
+  .dashboard-stat-grid > div:last-child {
+    border-radius: 0 0 16px 16px !important;
+    border-bottom: 1px solid var(--border) !important;
+  }
+
+  /* Stat icon smaller on mobile */
+  .dashboard-stat-grid > div > div:first-child {
+    width: 44px !important;
+    height: 44px !important;
+    min-width: 44px !important;
+    flex-shrink: 0 !important;
+    margin-top: 0 !important;
+  }
+
+  /* Value text smaller on mobile */
+  .dashboard-stat-grid > div .mask-num,
+  .dashboard-stat-grid > div p[style*='font-size: 28px'] {
+    font-size: 22px !important;
+  }
+
+  /* Dashboard outer padding */
+  [style*='padding: 28px 32px'] {
+    padding: 16px 14px !important;
+    gap: 16px !important;
+  }
+
+  /* Charts → stack */
+  [style*='gridTemplateColumns: 2fr 1fr'] {
+    grid-template-columns: 1fr !important;
+  }
+
+  /* Announcement banner padding */
+  [style*='padding: 16px 20px'][style*='borderRadius: 16'] {
+    padding: 12px 14px !important;
+    border-radius: 12px !important;
+  }
+}
+
+/* ── Dashboard charts row mobile ── */
+@media (max-width: 768px) {
+  .dashboard-charts-row {
+    grid-template-columns: 1fr !important;
+  }
+  /* Global trending items — make sure they show as cards on mobile */
+  .dashboard-charts-row > div:last-child {
+    /* Trending section */
+  }
+}
+
+/* ── Console mobile: log rows as cards ── */
+@media (max-width: 640px) {
+
+  /* Hide column headers on mobile */
+  .console-headers {
+    display: none !important;
+  }
+
+  /* Log rows → card style */
+  .console-log-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    padding: 12px 14px !important;
+    border-radius: 10px !important;
+    border: 1px solid var(--border) !important;
+    border-left: 3px solid var(--accent) !important;
+    margin: 6px 10px !important;
+    background: var(--bg-card) !important;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.04) !important;
+  }
+
+  /* Each cell in card row */
+  .console-log-row > * {
+    padding-top: 0 !important;
+  }
+
+  /* Time + operator on same line */
+  .console-log-row > span:first-child {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-size: 11px !important;
+    color: var(--text-muted) !important;
+  }
+
+  /* Service (platform) text bigger */
+  .console-log-row > div:nth-child(3) span {
+    font-size: 14px !important;
+    font-weight: 800 !important;
+  }
+
+  /* SMS message */
+  .console-log-row > div:last-child p {
+    font-size: 12px !important;
+    color: var(--text-secondary) !important;
+  }
+}
+
+/* ── GetNumber: mobile grid fix — right panel visible only when left hidden ── */
+@media (max-width: 768px) {
+
+  /* Left panel hidden by default on mobile — takes no space */
+  .get-number-left-panel:not(.mobile-panel-open) {
+    display: none !important;
+  }
+
+  /* Sidebar hamburger */
+  .mobile-hamburger {
+    display: flex !important;
+    position: fixed !important;
+    top: 8px !important;
+    left: 8px !important;
+    z-index: 55 !important;
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  /* Topbar — push content right so hamburger doesn't overlap */
+  header[class*="fixed"] {
+    padding-left: 54px !important;
+  }
+
+  /* Bigger fonts for mobile readability */
+  .page-sub {
+    font-size: 13px !important;
+  }
+  .page-title {
+    font-size: 22px !important;
+  }
+
+  /* Card padding — comfortable on mobile */
+  .card {
+    padding: 14px !important;
+  }
+
+  /* Stats bar in GetNumber — wrap properly */
+  [style*='filtered.length'] {
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+  }
+
+  /* Number list header stats — wrap */
+  div[style*='✓'][style*='success'] {
+    flex-wrap: wrap !important;
+  }
+}
+
+/* ── Sidebar Logo area — fix hamburger overlap ── */
+@media (max-width: 768px) {
+  /* User panel sidebar logo — add left padding for hamburger */
+  aside .sidebar-logo-area {
+    padding-left: 44px !important;
+  }
+}
+
+/* ── Topbar mobile: hamburger in topbar, left=0 ── */
+@media (max-width: 768px) {
+  /* Topbar full width */
+  header.fixed {
+    left: 0 !important;
+    padding-left: 12px !important;
+    padding-right: 12px !important;
+  }
+
+  /* Show topbar hamburger */
+  .mobile-hamburger-topbar {
+    display: flex !important;
+  }
+
+  /* Hide fixed hamburger button (from Layout.tsx) */
+  .mobile-hamburger {
+    display: none !important;
+  }
+
+  /* Search bar — shrink on mobile */
+  .topbar-search {
+    width: 140px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .topbar-search {
+    width: 100px !important;
+  }
+}
+
+/* ════════════════════════════════════════
+   ALL PAGES — MOBILE FIXES
+   ════════════════════════════════════════ */
+
+/* ── Console: card style for log rows on mobile ── */
+@media (max-width: 768px) {
+
+  /* Hide column headers */
+  .console-headers {
+    display: none !important;
+  }
+
+  /* Log rows become vertical cards */
+  .console-log-row {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+    padding: 12px 14px !important;
+    border-left: 3px solid var(--accent) !important;
+  }
+
+  /* Remove grid from log rows */
+  .console-log-row > * {
+    padding-top: 0 !important;
+  }
+}
+
+/* ── Payment: 2-col → 1-col on mobile ── */
+@media (max-width: 768px) {
+  .payment-two-col {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── AccessList: stat grid 3-col → 1-col on mobile ── */
+@media (max-width: 768px) {
+  .grid.grid-cols-3 {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── NewsFeed: min card width smaller on mobile ── */
+@media (max-width: 480px) {
+  [style*='minmax(320px'] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Dashboard: use page-wrap class padding on mobile ── */
+@media (max-width: 768px) {
+  /* Dashboard inner padding override */
+  .dashboard-inner {
+    padding: 14px 12px !important;
+    gap: 14px !important;
+  }
+}
+
+/* ── General: prevent any page from overflowing horizontally ── */
+.page-wrap > * {
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* ── Tables with fixed-px grid columns: make scrollable ── */
+@media (max-width: 768px) {
+  /* Any grid with pixel-fixed columns that might overflow */
+  [style*='gridTemplateColumns: 140px'],
+  [style*='gridTemplateColumns: 70px'] {
+    overflow-x: auto !important;
+  }
+}

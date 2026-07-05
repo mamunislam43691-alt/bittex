@@ -1,0 +1,17 @@
+node_modules
+server/node_modules
+dist
+.env
+.env.local
+server/.env
+*.log
+.git
+.gitignore
+mongo_data
+certbot_certs
+certbot_www
+Dockerfile.frontend
+docker-compose.yml
+deploy.sh
+DEPLOY_GUIDE.md
+SETUP.md

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+server/node_modules/
+
+# Build output
+dist/
+
+# Environment files (NEVER commit these)
+.env
+.env.local
+.env.production
+server/.env
+
+# Firebase service account key (NEVER commit — contains private key)
+server/firebase-service-account.json
+*-adminsdk-*.json
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Docker volumes
+mongo_data/
+certbot_certs/
+certbot_www/
