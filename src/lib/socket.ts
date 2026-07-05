@@ -5,7 +5,15 @@ let socket: Socket | null = null
 export function connectSocket(userId: string, role: string): Socket {
   if (socket?.connected) return socket
 
-  socket = io(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:5000', {
+  // In production, frontend & backend are on the same host — use window.location.origin
+  // In dev, connect to localhost:5000
+  const socketUrl = import.meta.env.VITE_API_URL
+    ? import.meta.env.VITE_API_URL.replace('/api', '')
+    : import.meta.env.DEV
+      ? 'http://localhost:5000'
+      : window.location.origin
+
+  socket = io(socketUrl, {
     transports: ['websocket', 'polling'],
     reconnection: true,
     reconnectionAttempts: 10,

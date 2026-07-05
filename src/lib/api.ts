@@ -1,5 +1,8 @@
 // Central API client for BITTX SMS
-const BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
+// In production (Railway), frontend and backend run on the same host,
+// so we use a relative /api path. In local dev, we fallback to localhost:5000.
+const BASE = import.meta.env.VITE_API_URL ||
+  (import.meta.env.DEV ? 'http://localhost:5000/api' : '/api')
 
 /** Normalize email: strip dots from local part for Gmail-like providers */
 export function normalizeEmail(email: string): string {
@@ -207,7 +210,9 @@ export const adminApi = {
   countriesAnalytics: () => api.get('/admin/analytics/countries'),
   // Database
   wipeDatabase: () => api.post('/admin/wipe', {}),
-  exportDatabase: () => `${import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/admin/export`,
+  exportDatabase: () =>
+    import.meta.env.VITE_API_URL ||
+    (import.meta.env.DEV ? 'http://localhost:5000/api' : '/api') + '/admin/export',
   syncBalances: () => api.post('/admin/sync-balances', {}),
 }
 
