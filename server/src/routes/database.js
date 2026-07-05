@@ -139,7 +139,9 @@ router.get('/stats', ...adminOnly, async (req, res) => {
     const heapTotalMB = +(mem.heapTotal / 1024 / 1024).toFixed(2)
     const systemMemPct = Math.round((usedMem / totalMem) * 100)
 
-    // ── Per-database stats (collections + estimated sizes) ──
+    // ── Per-database stats (collections + counts) ──
+    // Note: collStats / dbStats commands are restricted on MongoDB Atlas free tier.
+    // We fall back to countDocuments() which works on all tiers.
     async function dbStats(conn, label, kind) {
       if (!conn || conn.readyState !== 1) {
         return { label, kind, connected: false, sizeBytes: 0, displaySize: '0 B', collections: [] }
@@ -148,36 +150,38 @@ router.get('/stats', ...adminOnly, async (req, res) => {
         const db = conn.db
         const dbName = db.databaseName
         const colls = await db.listCollections().toArray()
-        let totalSize = 0
         const collectionRows = []
+
         for (const c of colls) {
+          // Try collStats first (works on self-hosted), fallback to countDocuments (Atlas)
+          let count = 0, sizeBytes = 0, storageSize = 0, avgObjSize = 0
           try {
-            const stats = await db.command({ collStats: c.name, scale: 1 }).catch(() => null)
-            const sizeBytes = stats?.size || 0
-            const storageSize = stats?.storageSize || 0
-            const count = stats?.count || 0
-            const avgObjSize = stats?.avgObjSize || 0
-            totalSize += sizeBytes
-            collectionRows.push({
-              name: c.name,
-              count,
-              sizeBytes,
-              storageSizeBytes: storageSize,
-              avgObjSize,
-              displaySize: humanBytes(sizeBytes),
-            })
+            const stats = await db.command({ collStats: c.name, scale: 1 })
+            count       = stats?.count       || 0
+            sizeBytes   = stats?.size        || 0
+            storageSize = stats?.storageSize || 0
+            avgObjSize  = stats?.avgObjSize  || 0
           } catch {
-            // Just count instead
-            const count = await db.collection(c.name).countDocuments().catch(() => 0)
-            collectionRows.push({ name: c.name, count, sizeBytes: 0, displaySize: '—' })
+            // Atlas free tier: collStats restricted — use countDocuments
+            count = await db.collection(c.name).countDocuments().catch(() => 0)
           }
+          collectionRows.push({
+            name: c.name,
+            count,
+            sizeBytes,
+            storageSizeBytes: storageSize,
+            avgObjSize,
+            displaySize: sizeBytes > 0 ? humanBytes(sizeBytes) : `${count} docs`,
+          })
         }
+
+        const totalSize = collectionRows.reduce((s, c) => s + c.sizeBytes, 0)
         return {
           label, kind, connected: true,
           dbName,
           sizeBytes: totalSize,
-          displaySize: humanBytes(totalSize),
-          collections: collectionRows.sort((a, b) => b.sizeBytes - a.sizeBytes),
+          displaySize: totalSize > 0 ? humanBytes(totalSize) : `${collectionRows.length} collections`,
+          collections: collectionRows.sort((a, b) => b.count - a.count),
         }
       } catch (e) {
         return { label, kind, connected: false, error: e.message, sizeBytes: 0, displaySize: '0 B', collections: [] }

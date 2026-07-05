@@ -232,8 +232,9 @@ export default function AdminDatabase() {
       const res = await api.get('/database/stats')
       setStats(res)
       setLastTick(Date.now())
-    } catch (e) {
-      // silent
+    } catch (e: any) {
+      // Show error in flash instead of silent fail
+      flash(false, 'Failed to load database stats: ' + (e?.message || 'Server error'))
     } finally {
       setStatsLoading(false)
     }
