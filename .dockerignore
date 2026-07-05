@@ -3,6 +3,7 @@ server/node_modules
 dist
 .env
 .env.local
+.env.railway
 server/.env
 *.log
 .git
@@ -11,7 +12,10 @@ mongo_data
 certbot_certs
 certbot_www
 Dockerfile.frontend
+Dockerfile.railway
 docker-compose.yml
 deploy.sh
+ssl-setup.sh
 DEPLOY_GUIDE.md
 SETUP.md
+RAILWAY_DEPLOY.md

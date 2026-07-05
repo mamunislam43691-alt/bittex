@@ -1,3 +1,0 @@
-# Railway nixpacks config — tells Railway to use our custom Dockerfile
-[variables]
-NODE_ENV = "production"

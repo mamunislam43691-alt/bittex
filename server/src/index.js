@@ -148,9 +148,9 @@ async function start() {
     } catch {}
   }, 60000) // every 60s
 
-  // 5. Listen
-  const PORT = process.env.PORT || 5000
-  server.listen(PORT, () => console.log(`✓ Server running on http://localhost:${PORT}`))
+  // 5. Listen — Railway injects PORT automatically, fallback to 8080
+  const PORT = parseInt(process.env.PORT || '8080', 10)
+  server.listen(PORT, '0.0.0.0', () => console.log(`✓ Server running on http://0.0.0.0:${PORT}`))
   server.on('error', (err) => {
     if (err.code === 'EADDRINUSE') {
       console.error(`✗ Port ${PORT} is already in use. Kill the existing process and restart.`)
